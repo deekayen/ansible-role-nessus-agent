@@ -1,17 +1,9 @@
 ---
 
-- name: Ensure dependencies are installed.
-  apt:
-    name:
-      - curl
-      - apt-transport-https
-    state: installed
-
 - include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 
 - include: Ubuntu.yml
-  apt: deb={{nessus_agent_package}}
   when: ansible_distribution == 'Ubuntu'
 
 - name: Check agent link status

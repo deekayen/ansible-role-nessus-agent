@@ -1,6 +1,22 @@
 ---
 
+# Someday add the checksum to this.
+# Remote machines may not have Internet access. Assume Ansible box does.
+- name: Download RPM package to local tmp.
+  local_action:
+    module: get_url
+    url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm&licence_accept=yes&t={{ nessus_timecheck }}"
+    dest: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    force: no
+
+# Copy would support a URL, but doing get_url without force works like a cache.
+- name: Upload RPM to remote.
+  copy:
+    src: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    force: no
+
 - name: Install RPM package.
   yum:
-    name: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm&licence_accept=yes&t={{ nessus_timecheck }}"
+    name: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
     state: present

@@ -1,7 +1,9 @@
 ---
 
 nessus_download_page: https://www.tenable.com/products/nessus/agent-download
-nessus_download_path: /tmp
+
+nessus_linux_tmp: /tmp
+nessus_windows_temp: "C:\\Windows\\Temp"
 
 nessus_version: 7.0.0
 nessus_ubuntu_checksum: 48d426900392dee9e107e56ed78f9c40

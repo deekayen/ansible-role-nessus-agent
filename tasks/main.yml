@@ -1,6 +1,7 @@
 ---
 
-- import_tasks: timecheck.yml
+- import_tasks: Darwin.yml
+  when: ansible_os_family == "Darwin"
 
 - import_tasks: linux.yml
   when: ansible_system == "Linux"

@@ -1,15 +1,43 @@
 ---
 
-# https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
+- name: Check for existing Nessus Agent installation.
+  win_stat:
+    path: "C:\\Program Files\\Tenable\\Nessus Agent"
+  register: nessus_installed
 
-- name: Install 64-bit MSI package.
-  win_package:
-    path: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-x64.msi&licence_accept=yes&t={{ nessus_timecheck }}"
-    arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
-  when: ansible_architecture == "64-bit"
+- debug:
+    var: nessus_installed
+    verbosity: 1
 
-- name: Install 32-bit MSI package.
-  win_package:
-    path: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-Win32.msi&licence_accept=yes&t={{ nessus_timecheck }}"
-    arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
-  when: not ansible_architecture == "64-bit"
+# Skip all the download, copy, and install stuff if the files already exist.
+- block:
+
+  - import_tasks: timecheck.yml
+
+  - set_fact:
+      nessus_windows_architecture: "{{ ansible_architecture == '64-bit' | ternary('x64','Win32') }}"
+
+  # Someday add the checksum to this.
+  # Remote machines may not have Internet access. Assume Ansible box does.
+  - name: Download MSI package to local tmp.
+    local_action:
+      module: get_url
+      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi&licence_accept=yes&t={{ nessus_timecheck }}"
+      dest: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      force: no
+
+  # Copy would support a URL, but doing get_url without force works like a cache.
+  - name: Upload MSI to remote.
+    copy:
+      src: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      dest: "{{ nessus_windows_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      force: no
+
+  # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
+  - name: Install MSI package.
+    win_package:
+      path: "{{ nessus_windows_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
+      creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
+
+  when: not nessus_installed.stat.exists

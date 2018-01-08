@@ -1,0 +1,47 @@
+---
+
+- name: Check for existing Nessus Agent installation.
+  stat:
+    path: /Library/NessusAgent/run/sbin/nessuscli
+  register: nessus_installed
+
+- debug:
+    var: nessus_installed
+    verbosity: 1
+
+# Skip all the download, copy, and install stuff if the files already exist.
+- block:
+
+  # Someday add the checksum to this.
+  # Remote machines may not have Internet access. Assume Ansible box does.
+  - name: Download dmg to remote tmp.
+    get_url:
+      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}.dmg&licence_accept=yes&t={{ nessus_timecheck }}"
+      dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+      force: no
+
+  - name: Check if dmg is mounted already.
+    stat:
+      path: "/Volumes/Nessus Agent Install"
+    register: nessus_agent_install_mounted
+
+  - name: Mount dmg image for {{ app_name }}
+    command: "hdiutil attach {{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+    when: not nessus_agent_install_mounted.stat.exists
+
+  - name: Install pkg from dmg mount.
+    shell: "installer -package /Volumes/Nessus\ Agent\ Install/Install\ Nessus\ Agent.pkg -target /"
+    args:
+      chdir: "/Volumes/Nessus Agent Install"
+      creates: /Library/NessusAgent/run/sbin/nessuscli
+    become: yes
+
+  - name: Unmount dmg image.
+    command: "hdiutil detach '/Volumes/Nessus Agent Install'"
+
+  - name: Remove dmg file.
+    file:
+      path: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+      state: absent
+
+  when: not nessus_installed.stat.exists

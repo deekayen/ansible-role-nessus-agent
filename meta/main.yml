@@ -8,12 +8,22 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - all
+        - 11.10
+        - 12.04
+        - 12.10
+        - 13.04
+        - 13.10
+        - 14.04
+        - 16.04
     - name: Debian
       versions:
-        - all
+        - 6
+        - 7
+        - 8
     - name: EL
       versions:
+        - 5
+        - 6
         - 7
     - name: Windows
       versions:

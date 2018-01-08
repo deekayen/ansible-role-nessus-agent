@@ -1,27 +1,32 @@
 [![Build Status](https://travis-ci.org/deekayen/ansible-role-nessus-agent.svg?branch=master)](https://travis-ci.org/deekayen/ansible-role-nessus-agent)
 
-ansible-role-nessus-agent
-=========
+Nessus Agent
+============
 
-Ansible role for installing and configuring Nessus Agent
+Ansible role for installing and configuring Nessus Agent.
 
-https://galaxy.ansible.com/singleplatform-eng/nessus-agent/
+https://galaxy.ansible.com/deekayen/nessus-agent/
 
 Role Variables
 --------------
 
-- `nessus_agent_key`: key used for linking with nessus host (this is a required variable)
+- `nessus_agent_key`: Key used for linking with Nessus host. This is blank by default and should be set.
 
-- `nessus_agent_group`: host group this agent should be added to when linking with nessus host (this is a required variable)
+- `nessus_agent_group`: Host group this agent should be added to when linking with Nessus host.
 
-- `nessus_agent_host`: nessus host to link with (default: `cloud.tenable.com`)
+- `nessus_agent_host`: Nessus host to link with (default: `cloud.tenable.com`).
 
-- `nessus_agent_port`: nessus host port (default: `443`)
+- `nessus_agent_port`: Nessus host port (default: `443`).
 
-- `nessus_agent_package`: can be either a repository package or a path to a file (default: `NessusAgent`)
+- `nessus_download_page`: The main download page to scrape for a download token.
 
-        nessus_agent_package: nessus-agent
-        nessus_agent_package: /tmp/nessus-agent_6.8.1_amd64.deb
+    https://www.tenable.com/products/nessus/agent-download
+
+- `nessus_linux_tmp`: /tmp
+
+- `nessus_windows_temp`: "C:\\Temp"
+
+- `nessus_version`: 7.0.0
 
 Example Playbook
 ----------------
@@ -32,7 +37,6 @@ Example Playbook
          - role: ansible-role-nessus-agent
            nessus_agent_key: xxxxxxxxx
            tags: nessus-agent
-
 
 License
 -------

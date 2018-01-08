@@ -3,11 +3,9 @@
 nessus_download_page: https://www.tenable.com/products/nessus/agent-download
 
 nessus_linux_tmp: /tmp
-nessus_windows_temp: "C:\\Windows\\Temp"
+nessus_windows_temp: "C:\\Temp"
 
 nessus_version: 7.0.0
-nessus_ubuntu_checksum: 48d426900392dee9e107e56ed78f9c40
-nessus_el_checksum: 4f1e9bb8963e2530f338014df5bda9de
 
 nessus_agent_host: cloud.tenable.com
 nessus_agent_port: 443

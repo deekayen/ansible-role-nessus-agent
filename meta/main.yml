@@ -1,15 +1,21 @@
 dependencies: []
 galaxy_info:
-  author: SinglePlatform Engineering (http://engineering.singleplatform.com/)
-  company: SinglePlatform (http://www.singleplatform.com/)
+  author: David Norman
+  company: Ciox Health (http://www.cioxhealth.com)
   license: BSD 3-Clause
 
-  min_ansible_version: 2.1
+  min_ansible_version: 2.4
   platforms:
     - name: Ubuntu
       versions:
         - all
     - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - 7
+    - name: Windows
       versions:
         - all
 

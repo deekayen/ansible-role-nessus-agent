@@ -1,0 +1,15 @@
+---
+
+# https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
+
+- name: Install 64-bit MSI package.
+  win_package:
+    path: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-x64.msi&licence_accept=yes&t={{ nessus_timecheck }}"
+    arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
+  when: ansible_architecture == "64-bit"
+
+- name: Install 32-bit MSI package.
+  win_package:
+    path: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-Win32.msi&licence_accept=yes&t={{ nessus_timecheck }}"
+    arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
+  when: not ansible_architecture == "64-bit"

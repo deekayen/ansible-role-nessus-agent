@@ -1,0 +1,27 @@
+---
+
+# Bypass download automation prevention
+- name: Load Nessus Agent download page.
+  local_action:
+    module: get_url
+    url: "{{ nessus_download_page }}"
+    dest: "{{ local_tmp }}/nessus_download.html"
+    force: yes
+
+- name: Grep for timecheck variable.
+  local_action:
+    module: xml
+    path: "{{ local_tmp }}/nessus_download.html"
+    xpath: '//*[@id="timecheck"]'
+    content: text
+  register: nessus_timecheck
+
+- debug:
+    var: nessus_timecheck
+    verbosity: 0
+
+- name: Cleanup local tmp.
+  local_action:
+    module: file
+    path: "{{ local_tmp }}/nessus_download.html"
+    state: absent

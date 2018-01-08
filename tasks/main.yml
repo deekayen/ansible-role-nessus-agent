@@ -1,27 +1,9 @@
 ---
 
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- import_tasks: timecheck.yml
 
-- include: Ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
+- import_tasks: linux.yml
+  when: ansible_system == "Linux"
 
-- name: Check agent link status
-  command: /opt/nessus_agent/sbin/nessuscli agent status
-  become: yes
-  ignore_errors: yes
-  register: nessus_link
-
-- name: Configure Nessus Agent
-  command: >
-      /opt/nessus_agent/sbin/nessuscli agent link
-      --key={{nessus_agent_key}}
-      --host={{nessus_agent_host}}
-      --port={{nessus_agent_port}}
-      --groups="{{nessus_agent_group}}"
-  become: yes
-  when: nessus_link|failed
-  notify: restart nessusagent
-
-- name: Ensure nessusagent is started
-  service: name=nessusagent state=started enabled=yes
+- import_tasks: Windows.yml
+  when: ansible_os_family == "Windows"

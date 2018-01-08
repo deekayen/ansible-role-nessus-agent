@@ -1,14 +1,6 @@
 ---
-# pkg string based on https://www.tenable.com/products/nessus/agent-download
-# NessusAgent-6.11.1-ubuntu1110_amd64.deb
 
-- name: Download specific Nessus version.
-  get_url:
-    url: "{{ nessus_s3_url }}/NessusAgent-{{ nessus_version }}-ubuntu1110_amd64.deb"
-    dest: "/tmp/NessusAgent-{{ nessus_version }}-ubuntu1110_amd64.deb"
-  when: nessus_version is defined
-
-- name: Install .deb package
+- name: Install Ubuntu package.
   apt:
-     deb: /tmp/NessusAgent-{{ nessus_version }}-ubuntu1110_amd64.deb
-     state: present
+    deb: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-ubuntu1110_amd64.deb&licence_accept=yes&t={{ nessus_timecheck }}"
+    state: present

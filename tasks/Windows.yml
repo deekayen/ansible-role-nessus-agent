@@ -30,13 +30,13 @@
   - name: Upload MSI to remote.
     copy:
       src: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
-      dest: "{{ nessus_windows_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      dest: "{{ nessus_windows_temp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       force: no
 
   # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
   - name: Install MSI package.
     win_package:
-      path: "{{ nessus_windows_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      path: "{{ nessus_windows_temp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
 

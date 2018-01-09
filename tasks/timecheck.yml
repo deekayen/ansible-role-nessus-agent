@@ -8,13 +8,8 @@
     dest: "/tmp/nessus_download.html"
     force: yes
 
-- name: Remove line with invalid og:description.
-  local_action:
-    module: lineinfile
-    path: "/tmp/nessus_download.html"
-    regexp: 'meta.+\w+:description'
-    state: absent
-
+# The Nessus download page has invalid XML that xpath won't parse.
+# This narrows to just the timecheck line we care about.
 - name: Grep timecheck line and make a single line file with it.
   local_action:
     module: shell grep timecheck /tmp/nessus_download.html > /tmp/timecheck.html
@@ -39,4 +34,3 @@
   with_items:
     - "/tmp/nessus_download.html"
     - "/tmp/timecheck.html"
-    - "{{ nessus_tmpdir }}"

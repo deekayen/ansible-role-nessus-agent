@@ -22,7 +22,7 @@
   - name: Download MSI package to local tmp.
     local_action:
       module: get_url
-      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi&licence_accept=yes&t={{ nessus_timecheck }}"
+      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi&licence_accept=yes&t={{ nessus_timecheck.matches.div }}"
       dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       force: no
 

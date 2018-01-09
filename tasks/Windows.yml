@@ -23,13 +23,13 @@
     local_action:
       module: get_url
       url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi&licence_accept=yes&t={{ nessus_timecheck }}"
-      dest: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       force: no
 
   # Copy would support a URL, but doing get_url without force works like a cache.
   - name: Upload MSI to remote.
     copy:
-      src: "{{ local_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
+      src: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       dest: "{{ nessus_windows_tmp }}/NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
       force: no
 

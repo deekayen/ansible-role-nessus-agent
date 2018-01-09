@@ -1,17 +1,22 @@
 ---
 
+- name: Make a temporary directory.
+  tempfile:
+    state: directory
+  register: nessus_tmpdir
+
 # Bypass download automation prevention
 - name: Load Nessus Agent download page.
   local_action:
     module: get_url
     url: "{{ nessus_download_page }}"
-    dest: "{{ local_tmp }}/nessus_download.html"
+    dest: "{{ nessus_tmpdir }}/nessus_download.html"
     force: yes
 
 - name: Grep for timecheck variable.
   local_action:
     module: xml
-    path: "{{ local_tmp }}/nessus_download.html"
+    path: "{{ nessus_tmpdir }}/nessus_download.html"
     xpath: '//*[@id="timecheck"]'
     content: text
   register: nessus_timecheck
@@ -20,8 +25,14 @@
     var: nessus_timecheck
     verbosity: 0
 
-- name: Cleanup local tmp.
+- name: Cleanup local tmp download.
   local_action:
     module: file
-    path: "{{ local_tmp }}/nessus_download.html"
+    path: "{{ nessus_tmpdir }}/nessus_download.html"
+    state: absent
+
+- name: Cleanup temp dir.
+  local_action:
+    module: file
+    path: "{{ nessus_tmpdir }}"
     state: absent

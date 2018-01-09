@@ -8,6 +8,12 @@
     dest: "/tmp/nessus_download.html"
     force: yes
 
+- name: Remove line with invalid og:description.
+  lineinfile:
+    path: "/tmp/nessus_download.html"
+    regexp: 'og:description'
+    state: absent
+
 - name: Grep for timecheck variable.
   local_action:
     module: xml

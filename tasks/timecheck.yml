@@ -12,7 +12,7 @@
   local_action:
     module: lineinfile
     path: "/tmp/nessus_download.html"
-    regexp: 'og:description'
+    regexp: 'meta.+\w+:description'
     state: absent
 
 - name: Grep for timecheck variable.

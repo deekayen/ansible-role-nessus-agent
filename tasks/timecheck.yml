@@ -9,7 +9,8 @@
     force: yes
 
 - name: Remove line with invalid og:description.
-  lineinfile:
+  local_action:
+    module: lineinfile
     path: "/tmp/nessus_download.html"
     regexp: 'og:description'
     state: absent

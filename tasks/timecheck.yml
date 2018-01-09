@@ -1,7 +1,8 @@
 ---
 
 - name: Make a temporary directory.
-  tempfile:
+  local_action:
+    module: tempfile
     state: directory
   register: nessus_tmpdir
 

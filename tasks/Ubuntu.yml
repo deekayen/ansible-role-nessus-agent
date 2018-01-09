@@ -1,7 +1,7 @@
 ---
 
 - set_fact:
-    nessus_ubuntu_architecture: "{{ ansible_architecture == 'x86_64' | ternary('amd64','i386') }}"
+    nessus_ubuntu_architecture: "{{ (ansible_architecture == 'x86_64') | ternary('amd64','i386') }}"
 
 # Someday add the checksum to this.
 # Remote machines may not have Internet access. Assume Ansible box does.

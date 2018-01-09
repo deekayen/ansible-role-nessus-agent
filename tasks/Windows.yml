@@ -15,7 +15,7 @@
   - import_tasks: timecheck.yml
 
   - set_fact:
-      nessus_windows_architecture: "{{ ansible_architecture == '64-bit' | ternary('x64','Win32') }}"
+      nessus_windows_architecture: "{{ (ansible_architecture == '64-bit') | ternary('x64','Win32') }}"
 
   # Someday add the checksum to this.
   # Remote machines may not have Internet access. Assume Ansible box does.

@@ -8,7 +8,7 @@
 - name: Download deb package to local tmp.
   local_action:
     module: get_url
-    url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-ubuntu1110_{{ nessus_ubuntu_architecture }}.deb&licence_accept=yes&t={{ nessus_timecheck.matches.[0].div }}"
+    url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-ubuntu1110_{{ nessus_ubuntu_architecture }}.deb&licence_accept=yes&t={{ nessus_timecheck.matches.0.div }}"
     dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-ubuntu1110_{{ nessus_ubuntu_architecture }}.deb"
     force: no
 

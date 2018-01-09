@@ -16,7 +16,7 @@
   # Remote machines may not have Internet access. Assume Ansible box does.
   - name: Download dmg to remote tmp.
     get_url:
-      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}.dmg&licence_accept=yes&t={{ nessus_timecheck.matches.[0].div }}"
+      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}.dmg&licence_accept=yes&t={{ nessus_timecheck.matches.0.div }}"
       dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
       force: no
 

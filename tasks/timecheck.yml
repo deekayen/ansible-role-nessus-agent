@@ -15,10 +15,14 @@
     regexp: 'meta.+\w+:description'
     state: absent
 
+- name: Grep timecheck line and make a single line file with it.
+  local_action:
+    module: shell grep timecheck /tmp/nessus_download.html > /tmp/timecheck.html
+
 - name: Grep for timecheck variable.
   local_action:
     module: xml
-    path: "/tmp/nessus_download.html"
+    path: "/tmp/timecheck.html"
     xpath: '//*[@id="timecheck"]'
     content: text
   register: nessus_timecheck
@@ -30,11 +34,9 @@
 - name: Cleanup local tmp download.
   local_action:
     module: file
-    path: "/tmp/nessus_download.html"
+    path: "{{ item }}"
     state: absent
-
-- name: Cleanup temp dir.
-  local_action:
-    module: file
-    path: "{{ nessus_tmpdir }}"
-    state: absent
+  with_items:
+    - "/tmp/nessus_download.html"
+    - "/tmp/timecheck.html"
+    - "{{ nessus_tmpdir }}"

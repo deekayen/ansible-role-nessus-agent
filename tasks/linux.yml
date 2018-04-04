@@ -12,8 +12,6 @@
 # Skip all the download, copy, and install stuff if the files already exist.
 - block:
 
-  - import_tasks: timecheck.yml
-
   - import_tasks: RedHat.yml
     when: ansible_os_family == 'RedHat'
 

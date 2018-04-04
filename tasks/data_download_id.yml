@@ -13,7 +13,7 @@
 # This narrows to just the timecheck line we care about.
 - name: Grep download-modal-link line and make a single line file with it.
   local_action:
-    module: "shell grep download-modal-link {{ nessus_linux_tmp }}/nessus_download.html > {{ nessus_linux_tmp }}/download-links.html"
+    module: "shell grep '{{ data_file_name }}' {{ nessus_linux_tmp }}/nessus_download.html > {{ nessus_linux_tmp }}/download-links.html"
   become: false
 
 - name: Grep for data-download-id variable.

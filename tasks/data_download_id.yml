@@ -13,13 +13,18 @@
 # This narrows to just the timecheck line we care about.
 - name: Grep download-modal-link line and make a single line file with it.
   local_action:
-    module: "shell grep '{{ data_file_name }}' {{ nessus_linux_tmp }}/nessus_download.html > {{ nessus_linux_tmp }}/download-links.html"
+    module: "shell grep download-modal-link {{ nessus_linux_tmp }}/nessus_download.html > {{ nessus_linux_tmp }}/download-links1.html"
+  become: false
+
+- name: Grep data_file_name line and make a single line file with it.
+  local_action:
+    module: "shell grep '{{ data_file_name }}' {{ nessus_linux_tmp }}/download-links1.html > {{ nessus_linux_tmp }}/download-links2.html"
   become: false
 
 - name: Grep for data-download-id variable.
   local_action:
     module: xml
-    path: "{{ nessus_linux_tmp }}/download-links.html"
+    path: "{{ nessus_linux_tmp }}/download-links2.html"
     xpath: "//a[@data-file-name='{{ data_file_name }}']/@data-download-id"
     content: text
   register: nessus_download_id
@@ -36,5 +41,6 @@
     state: absent
   with_items:
     - "{{ nessus_linux_tmp }}/nessus_download.html"
-    - "{{ nessus_linux_tmp }}/download-links.html"
+    - "{{ nessus_linux_tmp }}/download-links1.html"
+    - "{{ nessus_linux_tmp }}/download-links2.html"
   become: false

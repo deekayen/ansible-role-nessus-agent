@@ -6,7 +6,7 @@
 - debug:
     var: data_file_name
 
-- include_tasks: data_download_id.yml
+- import_tasks: data_download_id.yml
 
 # Someday add the checksum to this.
 # Remote machines may not have Internet access. Assume Ansible box does.

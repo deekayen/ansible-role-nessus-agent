@@ -1,11 +1,19 @@
 ---
 
+- set_fact:
+    data_file_name: NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm
+
+- debug:
+    var: data_file_name
+
+- include_tasks: data_download_id.yml
+
 # Someday add the checksum to this.
 # Remote machines may not have Internet access. Assume Ansible box does.
 - name: Download RPM package to local tmp.
   local_action:
     module: get_url
-    url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm&licence_accept=yes&t={{ nessus_timecheck.matches.0.div }}"
+    url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id}}/{{ data_file_name }}"
     dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
     force: no
 

@@ -7,12 +7,14 @@
     url: "{{ nessus_download_page }}"
     dest: "/tmp/nessus_download.html"
     force: yes
+  become: false
 
 # The Nessus download page has invalid XML that xpath won't parse.
 # This narrows to just the timecheck line we care about.
 - name: Grep timecheck line and make a single line file with it.
   local_action:
     module: shell grep timecheck /tmp/nessus_download.html > /tmp/timecheck.html
+  become: false
 
 - name: Grep for timecheck variable.
   local_action:
@@ -21,6 +23,7 @@
     xpath: '//*[@id="timecheck"]'
     content: text
   register: nessus_timecheck
+  become: false
 
 - debug:
     var: nessus_timecheck
@@ -34,3 +37,4 @@
   with_items:
     - "/tmp/nessus_download.html"
     - "/tmp/timecheck.html"
+  become: false

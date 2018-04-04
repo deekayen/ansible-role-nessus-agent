@@ -27,7 +27,7 @@
 
 - debug:
     var: nessus_download_id
-    verbosity: 0
+    verbosity: 1
 
 - name: Cleanup local tmp download.
   local_action:

@@ -5,6 +5,7 @@
 
 - debug:
     var: data_file_name
+    verbosity: 1
 
 - import_tasks: data_download_id.yml
 

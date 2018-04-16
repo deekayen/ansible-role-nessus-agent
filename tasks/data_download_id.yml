@@ -30,7 +30,7 @@
     module: lineinfile
     path: "{{ nessus_linux_tmp }}/download-links.html"
     state: present
-    insertbefore: "^<a"
+    insertbefore: BOF
     line: '<html xmlns="http://www.w3.org/1999/xhtml">'
 
 - name: Setup remaining grep output as valid XML.
@@ -38,7 +38,7 @@
     module: lineinfile
     path: "{{ nessus_linux_tmp }}/download-links.html"
     state: present
-    insertafter: "^<a"
+    insertafter: EOF
     line: '</html>'
 
 - name: Grep for data-download-id variable.

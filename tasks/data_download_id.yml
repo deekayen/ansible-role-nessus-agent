@@ -47,7 +47,7 @@
     path: "{{ nessus_linux_tmp }}/download-links.html"
     namespaces:
       ns: 'http://www.w3.org/1999/xhtml'
-    xpath: "//a[@data-file-name='{{ data_file_name }}']/@data-download-id"
+    xpath: "/ns:html/ns:a[@data-file-name='{{ data_file_name }}']/@data-download-id"
     content: text
   register: nessus_download_id
   become: false

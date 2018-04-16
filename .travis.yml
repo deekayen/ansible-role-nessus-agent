@@ -1,9 +1,12 @@
 ---
 
+os:
+  - linux
+  - osx
 dist: trusty
 language: python
 python: "2.7"
-
+osx_image: xcode9.3
 sudo: false
 
 # Install ansible.
@@ -12,9 +15,20 @@ addons:
     packages:
     - python-pip
 
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update;
+    fi
+
 install:
-  - pip install ansible
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew install ansible
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      pip install ansible
+    fi
   - pip install ansible-review
+  - pip install lxml
 
 before_script:
   - ansible --version

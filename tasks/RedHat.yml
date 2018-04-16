@@ -15,17 +15,17 @@
   local_action:
     module: get_url
     url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id}}/{{ data_file_name }}"
-    dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     force: no
 
 # Copy would support a URL, but doing get_url without force works like a cache.
 - name: Upload RPM to remote.
   copy:
-    src: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
-    dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    src: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
+    dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     force: no
 
 - name: Install RPM package.
   yum:
-    name: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+    name: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     state: present

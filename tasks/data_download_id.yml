@@ -17,17 +17,36 @@
   become: false
 
 - name: Setup remaining grep output as valid XML.
-  lineinfile:
+  local_action:
+    module: lineinfile
     path: "{{ nessus_linux_tmp }}/download-links.html"
     state: present
     regexp: "(.*)>$"
     line: '\1 />'
     backrefs: yes
 
+- name: Setup remaining grep output as valid XML.
+  local_action:
+    module: lineinfile
+    path: "{{ nessus_linux_tmp }}/download-links.html"
+    state: present
+    insertbefore: "^<a"
+    line: '<html xmlns="http://www.w3.org/1999/xhtml">'
+
+- name: Setup remaining grep output as valid XML.
+  local_action:
+    module: lineinfile
+    path: "{{ nessus_linux_tmp }}/download-links.html"
+    state: present
+    insertafter: "^<a"
+    line: '</html>'
+
 - name: Grep for data-download-id variable.
   local_action:
     module: xml
     path: "{{ nessus_linux_tmp }}/download-links.html"
+    namespaces:
+      ns: 'http://www.w3.org/1999/xhtml'
     xpath: "//a[@data-file-name='{{ data_file_name }}']/@data-download-id"
     content: text
   register: nessus_download_id

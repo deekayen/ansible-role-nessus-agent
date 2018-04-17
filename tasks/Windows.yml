@@ -42,5 +42,6 @@
       path: "{{ nessus_windows_temp }}/{{ data_file_name }}"
       arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
+    become: yes
 
   when: not nessus_installed.stat.exists

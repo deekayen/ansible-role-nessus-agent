@@ -32,7 +32,7 @@
         --port={{nessus_agent_port}}
         --groups="{{nessus_agent_group}}"
     become: yes
-    when: nessus_link|failed
+    when: nessus_link is failed
     notify: restart nessusagent
     ignore_errors: "{{ ansible_check_mode }}"
 

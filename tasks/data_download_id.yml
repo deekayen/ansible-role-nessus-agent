@@ -29,7 +29,7 @@
   local_action:
     module: xml
     path: "{{ nessus_linux_tmp }}/download-links.html"
-    xpath: "//@data-download-id"
+    xpath: "/a/@data-download-id"
     content: attribute
   register: nessus_download_id
   become: false

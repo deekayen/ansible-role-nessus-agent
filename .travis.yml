@@ -33,6 +33,10 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew upgrade;
+      brew install python@2;
+      brew link --overwrite python@2;
+      pip install --upgrade pip setuptools;
       brew install ansible;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then

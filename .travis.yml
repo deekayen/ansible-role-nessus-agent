@@ -33,7 +33,6 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew upgrade;
       brew install python@2;
       brew link --overwrite python@2;
       pip install --upgrade pip setuptools;
@@ -43,7 +42,6 @@ install:
       pip install ansible;
     fi
   - pip install ansible-review
-  - sudo pip install lxml
 
 before_script:
   - ansible --version

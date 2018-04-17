@@ -23,9 +23,11 @@
     src: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     force: no
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install DEB package.
   apt:
     deb: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     state: present
   become: yes
+  ignore_errors: "{{ ansible_check_mode }}"

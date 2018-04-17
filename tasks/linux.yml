@@ -34,11 +34,13 @@
     become: yes
     when: nessus_link|failed
     notify: restart nessusagent
+    ignore_errors: "{{ ansible_check_mode }}"
 
-  - name: Ensure nessusagent is enabled and started..
+  - name: Ensure nessusagent is enabled and started.
     service:
       name: nessusagent
       state: started
       enabled: yes
+    ignore_errors: "{{ ansible_check_mode }}"
 
   when: not nessus_installed.stat.exists

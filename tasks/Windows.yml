@@ -35,6 +35,7 @@
       src: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
       dest: "{{ nessus_windows_temp }}/{{ data_file_name }}"
       force: no
+    ignore_errors: "{{ ansible_check_mode }}"
 
   # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
   - name: Install MSI package.
@@ -43,5 +44,6 @@
       arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
     become: yes
+    ignore_errors: "{{ ansible_check_mode }}"
 
   when: not nessus_installed.stat.exists

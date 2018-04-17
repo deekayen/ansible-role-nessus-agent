@@ -16,6 +16,7 @@
     module: "shell grep download-modal-link {{ nessus_linux_tmp }}/nessus_download.html | grep '{{ data_file_name }}' | sed 's/.* data-download-id=\"\\([0-9]*\\)\".*/\\1/'"
   become: false
   register: nessus_download_id
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - debug:
     var: nessus_download_id

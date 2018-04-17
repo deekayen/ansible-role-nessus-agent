@@ -12,12 +12,17 @@
 # Skip all the download, copy, and install stuff if the files already exist.
 - block:
 
+  - set_fact:
+      data_file_name: "NessusAgent-{{ nessus_version }}.dmg"
+
+  - import_tasks: data_download_id.yml
+
   # Someday add the checksum to this.
   # Remote machines may not have Internet access. Assume Ansible box does.
-  - name: Download dmg to remote tmp.
+  - name: Download DMG package to local tmp.
     get_url:
-      url: "https://downloads.nessus.org/nessus3dl.php?file=NessusAgent-{{ nessus_version }}.dmg&licence_accept=yes&t={{ nessus_timecheck.matches.0.div }}"
-      dest: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+      url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id}}/{{ data_file_name }}"
+      dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
       force: no
 
   - name: Check if dmg is mounted already.
@@ -26,7 +31,7 @@
     register: nessus_agent_install_mounted
 
   - name: Mount dmg image for {{ app_name }}
-    command: "hdiutil attach {{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+    command: "hdiutil attach {{ nessus_linux_tmp }}/{{ data_file_name }}"
     when: not nessus_agent_install_mounted.stat.exists
 
   - name: Install pkg from dmg mount.
@@ -41,7 +46,7 @@
 
   - name: Remove dmg file.
     file:
-      path: "{{ nessus_linux_tmp }}/NessusAgent-{{ nessus_version }}.dmg"
+      path: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
       state: absent
 
   when: not nessus_installed.stat.exists

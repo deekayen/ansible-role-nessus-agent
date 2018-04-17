@@ -24,6 +24,7 @@ matrix:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      rvm get head;
       brew update;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then

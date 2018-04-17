@@ -1,13 +1,26 @@
 ---
 
-os:
-  - linux
-  - osx
-dist: trusty
-language: python
-python: "2.7"
-osx_image: xcode8.3
-sudo: false
+matrix:
+  include:
+    - os: linux
+      sudo: false
+      python: 2.7
+      language: python
+      dist: precise
+    - os: linux
+      sudo: false
+      python: 2.7
+      language: python
+      dist: trusty
+    - os: osx
+      language: generic
+      osx_image: xcode8
+    - os: osx
+      language: generic
+      osx_image: xcode8.3
+    - os: osx
+      language: generic
+      osx_image: xcode9.3
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then

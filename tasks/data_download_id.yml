@@ -30,14 +30,12 @@
     module: xml
     path: "{{ nessus_linux_tmp }}/download-links.html"
     xpath: "//@data-download-id"
-    content: text
-    print_match: yes
+    content: attribute
   register: nessus_download_id
   become: false
 
 - debug:
     var: nessus_download_id
-    verbosity: 1
 
 - name: Cleanup local tmp download.
   local_action:

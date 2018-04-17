@@ -13,7 +13,7 @@
 - name: Download DEB package to local tmp.
   local_action:
     module: get_url
-    url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id}}/{{ data_file_name }}"
+    url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
     dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
     force: no
 

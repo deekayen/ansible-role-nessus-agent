@@ -24,7 +24,7 @@
     ignore_errors: yes
     register: nessus_link
 
-  - name: Configure Nessus Agent.
+  - name: Link Nessus Agent.
     command: >
         /opt/nessus_agent/sbin/nessuscli agent link
         --key={{nessus_agent_key}}

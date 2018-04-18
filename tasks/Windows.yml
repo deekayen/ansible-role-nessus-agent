@@ -38,7 +38,7 @@
 
 # Need to be elevated admin to read the nessus master.key file.
 - name: Check agent link status.
-  win_command: '"C:\Program Files\Tenable\Nessus Agent\nessuscli.exe" agent status"'
+  win_command: '"C:\Program Files\Tenable\Nessus Agent\nessuscli.exe" agent status'
   become: yes
   ignore_errors: yes
   register: nessus_link

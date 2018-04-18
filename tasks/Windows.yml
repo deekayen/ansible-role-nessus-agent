@@ -28,6 +28,7 @@
         - "NESSUS_GROUPS=\"{{ nessus_agent_group }}\""
         - "NESSUS_SERVER=\"{{ nessus_agent_host }}\""
         - "NESSUS_KEY={{ nessus_agent_key }}"
+        - /qn
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
       creates_service: "Tenable Nessus Agent"
       state: present

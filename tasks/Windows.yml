@@ -20,31 +20,17 @@
 
   - import_tasks: data_download_id.yml
 
-  # Someday add the checksum to this.
-  # Remote machines may not have Internet access. Assume Ansible box does.
-  - name: Download MSI package to local tmp.
-    local_action:
-      module: get_url
-      url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
-      dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
-      force: no
-    become: no
-    ignore_errors: "{{ ansible_check_mode }}"
-
-  # Copy would support a URL, but doing get_url without force works like a cache.
-  - name: Upload MSI to remote.
-    win_copy:
-      src: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
-      dest: "{{ nessus_windows_temp }}/{{ data_file_name }}"
-      force: no
-    ignore_errors: "{{ ansible_check_mode }}"
-
   # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
   - name: Install MSI package.
     win_package:
-      path: "{{ nessus_windows_temp }}/{{ data_file_name }}"
-      arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }} /qn"
+      path: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
+      arguments:
+        - "NESSUS_GROUPS=\"{{ nessus_agent_group }}\""
+        - "NESSUS_SERVER=\"{{ nessus_agent_host }}\""
+        - "NESSUS_KEY={{ nessus_agent_key }}"
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
+      creates_service: "Tenable Nessus Agent"
+      state: present
     become: yes
     ignore_errors: "{{ ansible_check_mode }}"
 

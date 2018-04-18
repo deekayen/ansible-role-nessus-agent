@@ -45,7 +45,7 @@
 
 # Need to be elevated admin to write the nessus master.key file.
 - name: Link Nessus Agent.
-  win_command: "'C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe' agent link --key={{ nessus_agent_key }} --host={{ nessus_agent_host }} --port={{ nessus_agent_port }} --groups='{{ nessus_agent_group }}'"
+  win_shell: "'C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe' agent link --key={{ nessus_agent_key }} --host={{ nessus_agent_host }} --port={{ nessus_agent_port }} --groups='{{ nessus_agent_group }}'"
   become: yes
   when:
     - nessus_link is failed

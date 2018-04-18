@@ -33,7 +33,7 @@
 
   # Copy would support a URL, but doing get_url without force works like a cache.
   - name: Upload MSI to remote.
-    copy:
+    win_copy:
       src: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
       dest: "{{ nessus_windows_temp }}/{{ data_file_name }}"
       force: no

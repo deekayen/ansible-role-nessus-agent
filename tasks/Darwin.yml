@@ -24,6 +24,7 @@
       url: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
       dest: "{{ nessus_linux_tmp }}/{{ data_file_name }}"
       force: no
+    become: no
     ignore_errors: "{{ ansible_check_mode }}"
 
   - name: Check if dmg is mounted already.

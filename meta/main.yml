@@ -8,7 +8,6 @@ galaxy_info:
   platforms:
     - name: MacOSX
       versions:
-        - '10.10'
         - 10.11
         - 10.12
     - name: Ubuntu

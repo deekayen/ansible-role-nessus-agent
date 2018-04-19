@@ -14,9 +14,6 @@ matrix:
       dist: trusty
     - os: osx
       language: generic
-      osx_image: xcode6.4
-    - os: osx
-      language: generic
       osx_image: xcode8
     - os: osx
       language: generic

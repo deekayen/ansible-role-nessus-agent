@@ -12,14 +12,9 @@ galaxy_info:
         - 10.12
     - name: Ubuntu
       versions:
-        - precise
-        - quantal
-        - raring
-        - saucy
         - trusty
     - name: EL
       versions:
-        - 6
         - 7
     - name: Windows
       versions:

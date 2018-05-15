@@ -6,11 +6,6 @@ matrix:
       sudo: false
       python: 2.7
       language: python
-      dist: precise
-    - os: linux
-      sudo: false
-      python: 2.7
-      language: python
       dist: trusty
     - os: osx
       language: generic

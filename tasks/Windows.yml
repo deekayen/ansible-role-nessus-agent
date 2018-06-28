@@ -2,7 +2,7 @@
 
 - name: Check for existing Nessus Agent installation.
   win_stat:
-    path: "C:\\Program Files\\Tenable\\Nessus Agent"
+    path: "C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe"
   register: nessus_installed
 
 - debug:

@@ -20,14 +20,14 @@
 
   - import_tasks: data_download_id.yml
 
-  - set_fact:
-      msi_install_arguments: "NESSUS_GROUPS=\"{{ nessus_agent_group }}\" NESSUS_SERVER=\"{{ nessus_agent_host }}\" NESSUS_KEY={{ nessus_agent_key }}"
-
   # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
   - name: Install MSI package.
     win_package:
       path: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
-      arguments: "{{ msi_install_arguments }}"
+      arguments:
+        - "NESSUS_GROUPS={{ nessus_agent_group }}"
+        - "NESSUS_SERVER={{ nessus_agent_host }}"
+        - "NESSUS_KEY={{ nessus_agent_key }}"
       creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
       creates_service: "Tenable Nessus Agent"
       state: present

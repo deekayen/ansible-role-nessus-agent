@@ -26,7 +26,7 @@ Role Variables
 
 - `nessus_windows_temp`: "C:\\Temp"
 
-- `nessus_version`: 7.0.3
+- `nessus_version`: 7.1.0
 
 Example Playbook
 ----------------

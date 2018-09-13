@@ -8,6 +8,10 @@
     dest: "{{ nessus_linux_tmp }}/nessus_download.html"
     force: yes
   become: false
+  register: nessus_download_request
+
+- debug:
+    var: nessus_download_request
 
 # The Nessus download page has invalid XML that xpath won't parse.
 # This narrows to just the timecheck line we care about.

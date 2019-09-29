@@ -1,13 +1,9 @@
 ---
 
-nessus_download_page: https://www.tenable.com/products/nessus/agent-download
+chocolatey_source: https://nexus.example.com/repository/nuget-hosted/
 
-nessus_linux_tmp: /tmp
-nessus_windows_temp: "C:\\Temp"
-
-nessus_version: 7.1.1
-
+nessus_agent_key: ""
 nessus_agent_host: cloud.tenable.com
 nessus_agent_port: 443
-nessus_agent_key: ""
-nessus_agent_group: NessusAgent
+
+nessus_unlink: false

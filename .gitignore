@@ -1,2 +1,9 @@
-.vault_pass.txt
+*.keytab
 *.retry
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

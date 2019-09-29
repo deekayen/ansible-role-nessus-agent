@@ -1,0 +1,75 @@
+---
+
+- name: Install Nessus agent.
+  block:
+  - name: Install Nessus Agent by RPM.
+    yum:
+      name: NessusAgent
+      state: present
+      update_cache: yes
+    become: yes
+    ignore_errors: "{{ ansible_check_mode }}"
+    register: nessus_agent_install
+    tags:
+    - install
+
+  - debug:
+      var: nessus_agent_install
+      verbosity: 3
+
+  - name: Check agent link status.
+    command: /opt/nessus_agent/sbin/nessuscli agent status
+    become: yes
+    ignore_errors: yes
+    register: nessus_link
+    when: nessus_agent_install is succeeded
+    tags:
+    - configure
+
+  - name: Use nessuscli to link Tenable Nessus Agent to a management console.
+    command: >
+        /opt/nessus_agent/sbin/nessuscli agent link
+        --key={{ nessus_agent_key }}
+        --host={{ nessus_agent_host }}
+        --port={{ nessus_agent_port }}
+        --groups="{{ nessus_agent_group | default('LINUX') }}"
+    become: yes
+    when: nessus_link is failed
+    notify: restart nessusagent
+    ignore_errors: "{{ ansible_check_mode }}"
+    tags:
+    - configure
+
+  - name: Ensure nessusagent is enabled and started.
+    service:
+      name: nessusagent
+      state: started
+      enabled: yes
+    ignore_errors: "{{ ansible_check_mode }}"
+    tags:
+    - configure
+  when: not nessus_unlink
+
+- name: Unlink EL Nessus agent.
+  block:
+  - name: Check that Tenable nessuscli exists.
+    become: true
+    stat:
+      path: /opt/nessus_agent/sbin/nessuscli
+    register: nessus_installed
+    tags:
+    - unlink
+
+  - debug:
+      var: nessus_installed
+      verbosity: 3
+
+  - name: Use nessuscli to unlink Tenable Nessus Agent.
+    command: /opt/nessus_agent/sbin/nessuscli agent unlink
+    become: true
+    ignore_errors: true
+    when: nessus_installed.exists
+    tags:
+    - unlink
+
+  when: nessus_unlink

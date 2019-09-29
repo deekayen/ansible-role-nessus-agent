@@ -4,18 +4,12 @@ matrix:
   include:
     - os: linux
       sudo: false
-      python: 2.7
+      python: 3.7
       language: python
-      dist: trusty
+      dist: bionic
     - os: osx
       language: generic
-      osx_image: xcode8
-    - os: osx
-      language: generic
-      osx_image: xcode8.3
-    - os: osx
-      language: generic
-      osx_image: xcode9.3
+      osx_image: xcode11
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -27,14 +21,17 @@ before_install:
     fi
 
 install:
+  - ansible-galaxy install --force git+https://github.com/deekayen/ansible-role-nessus-agent.git,${TRAVIS_COMMIT}
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew install python@2;
       brew link --overwrite python@2;
       pip install --upgrade pip setuptools;
       brew install ansible;
+      brew install ansible-lint;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       pip install ansible;
+      pip install ansible-lint;
     fi
   - pip install ansible-review
 
@@ -45,9 +42,10 @@ before_script:
   - python --version
 
 script:
+  - ansible-lint -v .
   - printf '[defaults]\nroles_path=../' >ansible.cfg
   - git ls-files | grep -Ei '^[^[:punct:]].+.(yaml|yml)$' | xargs ansible-review -q
-  - ansible-playbook --check --diff -i localhost, -c local tests/test.yml
+  - ansible-playbook --syntax-check -i localhost, -c local tests/test.yml
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

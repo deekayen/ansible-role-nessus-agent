@@ -5,10 +5,18 @@
     name: nessusagent
     state: restarted
   become: yes
-  when: ansible_system == "Linux"
+  when:
+  - ansible_os_family is defined
+  - ansible_os_family == "RedHat"
+
+- name: start Tenable Nessus Agent
+  win_service:
+    name: Tenable Nessus Agent
+    state: started
+  when: ansible_connection == "winrm"
 
 - name: restart Tenable Nessus Agent
   win_service:
     name: Tenable Nessus Agent
     state: restarted
-  when: ansible_os_family == "Windows"
+  when: ansible_connection == "winrm"

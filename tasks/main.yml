@@ -1,10 +1,34 @@
 ---
 
-- import_tasks: Darwin.yml
-  when: ansible_os_family == "Darwin"
+- debug:
+    var: nessus_agent_key
+    verbosity: 3
 
-- import_tasks: linux.yml
-  when: ansible_system == "Linux"
+- name: Define a registration key for the Nessus agent.
+  assert:
+    that:
+      - nessus_agent_key is defined
+      - nessus_agent_key | trim | length > 1
+    fail_msg: "The nessus_agent_key variable must be defined to register the agent."
+    success_msg: "Agent key found."
+  tags:
+    - always
 
-- import_tasks: Windows.yml
-  when: ansible_os_family == "Windows"
+- debug:
+    var: "{{ item }}"
+    verbosity: 3
+  loop:
+    - ansible_connection
+    - ansible_os_family
+    - chocolatey_source
+    - nessus_agent_host
+    - nessus_agent_port
+    - nessus_unlink
+
+- include_tasks: el.yml
+  when:
+  - ansible_os_family is defined
+  - ansible_os_family == "RedHat"
+
+- include_tasks: windows.yml
+  when: ansible_connection == "winrm"

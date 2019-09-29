@@ -1,25 +1,26 @@
-dependencies: []
 galaxy_info:
   author: David Norman
-  company: Ciox Health (http://www.cioxhealth.com)
-  license: BSD 3-Clause
+  description: Install a Tenable Nessus Agent.
 
-  min_ansible_version: 2.5
+  issue_tracker_url: https://github.com/deekayen/ansible-role-nessus-agent/issues
+
+  min_ansible_version: 2.4
+
   platforms:
-    - name: MacOSX
-      versions:
-        - 10.11
-        - 10.12
-    - name: Ubuntu
-      versions:
-        - trusty
     - name: EL
       versions:
         - 7
     - name: Windows
       versions:
-        - all
+        - 2008R2
+        - 2012R2
+        - 2016
 
   galaxy_tags:
     - security
     - nessus
+    - agent
+
+dependencies:
+  - src: deekayen.chocolatey
+    when: ansible_connection == "winrm"

@@ -1,54 +1,71 @@
 ---
 
-- name: Check for existing Nessus Agent installation.
-  win_stat:
-    path: "C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe"
-  register: nessus_installed
-
-- debug:
-    var: nessus_installed
-    verbosity: 1
-
-# Skip all the download, copy, and install stuff if the files already exist.
-- block:
-
-  - set_fact:
-      nessus_windows_architecture: "{{ (ansible_architecture == '64-bit') | ternary('x64','Win32') }}"
-
-  - set_fact:
-      data_file_name: "NessusAgent-{{ nessus_version }}-{{ nessus_windows_architecture }}.msi"
-
-  - import_tasks: data_download_id.yml
-
-  # https://docs.tenable.com/nessus/Content/InstallNessusAgentWindows.htm
-  - name: Install MSI package.
-    win_package:
-      path: "https://tenable-downloads-production.s3.amazonaws.com/uploads/download/file/{{ nessus_download_id.stdout }}/{{ data_file_name }}"
-      arguments:
-        - "NESSUS_GROUPS={{ nessus_agent_group }}"
-        - "NESSUS_SERVER={{ nessus_agent_host }}"
-        - "NESSUS_KEY={{ nessus_agent_key }}"
-      creates_path: "C:\\Program Files\\Tenable\\Nessus Agent"
-      creates_service: "Tenable Nessus Agent"
+- name: Install Windows agent.
+  block:
+  - name: Install Tenable Nessus Agent.
+    win_chocolatey:
+      name: Tenable.NessusAgent
+      source: "{{ chocolatey_source }}"
+      params: "/NessusGroups:{{ nessus_agent_group | default('WINDOWS') }} \
+        /NessusKey:{{ nessus_agent_key }}"
       state: present
-    become: yes
+    become: true
+    become_method: runas
+    notify: start Tenable Nessus Agent
+    tags:
+      - install
+
+  # Need to be elevated admin to read the nessus master.key file.
+  - name: Check Windows agent link status.
+    win_command: '"C:\Program Files\Tenable\Nessus Agent\nessuscli.exe" \
+      agent status'
+    become: true
+    ignore_errors: true
+    register: nessus_link
+    tags:
+    - configure
+
+  - debug:
+      var: nessus_link
+      verbosity: 3
+
+  # Need to be elevated admin to write the nessus master.key file.
+  - name: Link Windows Tenable Nessus Agent.
+    raw: "& 'C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe' \
+      agent link
+      --key={{ nessus_agent_key }} \
+      --host={{ nessus_agent_host }} \
+      --port={{ nessus_agent_port }} \
+      --groups='{{ nessus_agent_group | default('WINDOWS') }}'"
+    become: true
+    when:
+      - nessus_link is failed
+      - nessus_link.rc == 2
+    notify: restart Tenable Nessus Agent
     ignore_errors: "{{ ansible_check_mode }}"
+    tags:
+      - configure
+  when: not nessus_unlink
 
-  when: not nessus_installed.stat.exists
+- name: Unlink Windows Tenable Nessus agent.
+  block:
+  - name: Check if Nessus Agent exists.
+    win_stat:
+      path: 'C:/Program Files/Tenable/Nessus Agent/nessuscli.exe'
+    register: nessus_installed
+    tags:
+      - unlink
 
-# Need to be elevated admin to read the nessus master.key file.
-- name: Check agent link status.
-  win_command: '"C:\Program Files\Tenable\Nessus Agent\nessuscli.exe" agent status'
-  become: yes
-  ignore_errors: yes
-  register: nessus_link
+  - debug:
+      var: nessus_installed
+      verbosity: 3
 
-# Need to be elevated admin to write the nessus master.key file.
-- name: Link Nessus Agent.
-  raw: "& 'C:\\Program Files\\Tenable\\Nessus Agent\\nessuscli.exe' agent link --key={{ nessus_agent_key }} --host={{ nessus_agent_host }} --port={{ nessus_agent_port }} --groups='{{ nessus_agent_group }}'"
-  become: yes
-  when:
-    - nessus_link is failed
-    - nessus_link.rc == 2
-  notify: restart Tenable Nessus Agent
-  ignore_errors: "{{ ansible_check_mode }}"
+  - name: Unlink Windows Tenable Nessus Agent.
+    win_command: '"C:\Program Files\Tenable\Nessus Agent\nessuscli.exe" \
+      agent unlink'
+    ignore_errors: true
+    become: true
+    when: nessus_installed.exists
+    tags:
+      - unlink
+  when: nessus_unlink

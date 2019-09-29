@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>Tenable.NessusAgent</id>
+    <title>Tenable Nessus Agent 64-bit Windows (Install)</title>
+    <version>7.4.3</version>
+    <authors>Tenable</authors>
+    <owners>Tenable</owners>
+    <projectUrl>https://www.tenable.com/products/nessus/nessus-agents</projectUrl>
+    <iconUrl>https://www.tenable.com/sites/all/themes/tenablefourteen/img/apple-touch-icon.png</iconUrl>
+    <description>
+Install Tenable Nessus Agent on Windows
+#### Package Parameters
+The following package parameters can be set:
+
+ * `/NessusGroups:` - Host group this agent should be added to when linking with Nessus host.
+ * `/NessusServer:` - Nessus host to link with (default: cloud.tenable.com)
+ * `/NessusKey:` - Key used for linking with Nessus host. This is blank by default.
+
+To pass parameters, use `--params "''"` (e.g. `choco install packageID [other options] --params="'/ITEM:value /ITEM2:value2 /FLAG_BOOLEAN'"`).
+To have choco remember parameters on upgrade, be sure to set `choco feature enable -n=useRememberedArgumentsForUpgrades`.
+
+    </description>
+    <tags>Tenable,Nessus</tags>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

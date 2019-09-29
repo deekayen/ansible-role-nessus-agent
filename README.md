@@ -1,6 +1,8 @@
 Tenable Nessus Agent
 ====================
 
+[![Build Status](https://travis-ci.org/deekayen/ansible-role-nessus-agent.svg?branch=master)](https://travis-ci.org/deekayen/ansible-role-nessus-agent)
+
 Install Tenable Nessus Agents and register with a management server.
 
 Tags:

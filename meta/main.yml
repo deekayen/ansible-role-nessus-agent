@@ -1,7 +1,7 @@
 galaxy_info:
   author: David Norman
   description: Install a Tenable Nessus Agent.
-
+  license: BSD 3-Clause
   issue_tracker_url: https://github.com/deekayen/ansible-role-nessus-agent/issues
 
   min_ansible_version: 2.4

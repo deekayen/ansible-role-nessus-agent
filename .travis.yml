@@ -30,6 +30,7 @@ install:
       pip install ansible;
       pip install ansible-lint;
     fi
+  - ansible-galaxy install --force deekayen.chocolatey
   - ansible-galaxy install --force git+https://github.com/deekayen/ansible-role-nessus-agent.git,${TRAVIS_COMMIT}
   - pip install ansible-review
 

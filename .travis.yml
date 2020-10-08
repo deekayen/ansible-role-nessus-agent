@@ -32,17 +32,14 @@ install:
     fi
   - ansible-galaxy install --force deekayen.chocolatey
   - ansible-galaxy install --force git+https://github.com/deekayen/ansible-role-nessus-agent.git,${TRAVIS_COMMIT}
-  - pip install ansible-review
 
 before_script:
   - ansible --version
-  - ansible-review --version
   - git --version
   - python --version
 
 script:
   - ansible-lint -v .
-  - git ls-files | grep -Ei '^[^[:punct:]].+.(yaml|yml)$' | xargs ansible-review -q
   - ansible-playbook --syntax-check -i localhost, -c local tests/test.yml
 
 notifications:

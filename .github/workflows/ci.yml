@@ -40,11 +40,11 @@ jobs:
       - name: Install test dependencies.
         run: python -m pip install --user ansible
 
-      - name: Install role dependencies.
-        run: ansible-galaxy install --force deekayen.chocolatey
-
       - name: Create ansible.cfg with correct roles_path.
         run: printf '[defaults]\nroles_path=../' >ansible.cfg
+
+      - name: Install role dependencies.
+        run: ansible-galaxy install --force deekayen.chocolatey
 
       - name: Check syntax.
         run: ansible-playbook tests/test.yml -i tests/inventory --syntax-check

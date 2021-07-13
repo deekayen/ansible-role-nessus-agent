@@ -1,6 +1,7 @@
 ---
 
-- debug:
+- name: "Debug: Nessus agent key."
+  debug:
     var: nessus_agent_key
     verbosity: 3
 
@@ -14,7 +15,8 @@
   tags:
     - always
 
-- debug:
+- name: "Debug: misc variables."
+  debug:
     var: "{{ item }}"
     verbosity: 3
   loop:
@@ -30,5 +32,5 @@
   - ansible_os_family is defined
   - ansible_os_family == "RedHat"
 
-- include_tasks: windows.yml
+- include_tasks: "{{ role_path }}/tasks/windows.yml"
   when: ansible_connection == "winrm"

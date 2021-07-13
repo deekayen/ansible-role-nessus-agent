@@ -61,7 +61,8 @@
     tags:
     - unlink
 
-  - debug:
+  - name: "Debug: Nessus agent installation state."
+    debug:
       var: nessus_installed
       verbosity: 3
 

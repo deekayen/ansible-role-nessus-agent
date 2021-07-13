@@ -13,7 +13,8 @@
     tags:
     - install
 
-  - debug:
+  - name: Print agent install output.
+    debug:
       var: nessus_agent_install
       verbosity: 3
 

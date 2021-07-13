@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: nessus_agent
+  namespace: deekayen
   author: David Norman
   description: Install a Tenable Nessus Agent.
   license: BSD 3-Clause

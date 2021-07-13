@@ -1,7 +1,7 @@
 Tenable Nessus Agent
 ====================
 
-[![Build Status](https://travis-ci.org/deekayen/ansible-role-nessus-agent.svg?branch=main)](https://travis-ci.org/deekayen/ansible-role-nessus-agent) [![Project Status: Suspended – Initial development has started, but there has not yet been a stable, usable release; work has been stopped for the time being but the author(s) intend on resuming work.](https://www.repostatus.org/badges/latest/suspended.svg)](https://www.repostatus.org/#suspended)
+[![CI](https://github.com/deekayen/ansible-role-nessus-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/deekayen/ansible-role-nessus-agent/actions/workflows/ci.yml) [![Project Status: Suspended – Initial development has started, but there has not yet been a stable, usable release; work has been stopped for the time being but the author(s) intend on resuming work.](https://www.repostatus.org/badges/latest/suspended.svg)](https://www.repostatus.org/#suspended)
 
 Install Tenable Nessus Agents and register with a management server.
 

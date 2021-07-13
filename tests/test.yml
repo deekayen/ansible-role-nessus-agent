@@ -2,7 +2,6 @@
 - hosts: localhost
   remote_user: root
   connection: local
-  become: true
 
   roles:
-    - ansible-role-nessus-agent
+    - deekayen.nessus_agent
